@@ -15,7 +15,6 @@ Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
 
 // ─── Wajib login (Bearer token) — semua data desa dilindungi di sini ──────────
-Route::get('/databantuan', [BantuanController::class, 'index']);
 Route::middleware('auth:sanctum')->group(function () {
 
     Route::post('/logout', [AuthController::class, 'logout']);
@@ -24,6 +23,7 @@ Route::middleware('auth:sanctum')->group(function () {
         return $request->user();
     });
 
+    Route::get('/databantuan', [BantuanController::class, 'index']);
     Route::post('/databantuan', [BantuanController::class, 'store']);
     Route::get('/databantuan/{bantuan:kode_bantuan}', [BantuanController::class, 'show']);
     Route::match(['put', 'patch'], '/databantuan/{bantuan:kode_bantuan}', [BantuanController::class, 'update']);
