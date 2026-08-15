@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Support\Facades\DB;
+use App\Models\Fasilitas;
 
 /**
  * Perbaikan data: foto_url yang tersimpan SEBELUM perbaikan APP_URL/url()
@@ -15,13 +16,10 @@ return new class extends Migration
 {
     public function up(): void
     {
-        $appUrl = rtrim(config('app.url'), '/');
-
-        DB::table('fasilitas')
-            ->where('foto_url', 'like', '/storage/%')
-            ->update([
-                'foto_url' => DB::raw("CONCAT('{$appUrl}', foto_url)"),
-            ]);
+        Fasilitas::where('foto_url', 'like', '/storage/%')->each(function ($fasilitas) {
+            $fasilitas->foto_url = 'http://localhost' . $fasilitas->foto_url;
+            $fasilitas->save();
+        });
     }
 
     public function down(): void
